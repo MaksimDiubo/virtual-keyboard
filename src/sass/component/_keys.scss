@@ -36,14 +36,11 @@
     &--pressed {
         background: $color-pressed;
     }
-    &--medium {
-        width: 5.4%;
-    }
     &--wide {
         width: 10%;
     }
     &--extra-wide {
-        width: 35%;
+        width: 36%;
         max-width: 500px;
     }
     &--activatable {

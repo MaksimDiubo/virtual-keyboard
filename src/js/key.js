@@ -1,5 +1,5 @@
 export class Key {
-    constructor({ value, altValue, width, newLine }) {
+    constructor({ value, altValue, width, newLine, code }) {
       this.elements = {
         key: null,
         mainValue: null,
@@ -10,28 +10,20 @@ export class Key {
       this.language = 'en'
       this.width = width
       this.newLine = newLine
+      this.code = code
     }
   
     generateKey() {
       this.elements.key = document.createElement('button');
-      this.elements.mainValue = document.createElement('span');
-      this.elements.altValue = document.createElement('span');
   
       // Add attributes/classes
       this.elements.key.setAttribute('type', 'button');
-      this.elements.key.classList.add('keyboard__key');      
-      this.elements.altValue.classList.add('alternative-value');
-      
-      
-  
-      if (this.altValue[this.language]) {
-        this.elements.altValue.innerText = this.altValue[this.language];
-      }
-  
+      this.elements.key.classList.add('keyboard__key');
       if (this.width) {
         this.elements.key.classList.add(`keyboard__key--${this.width}`)
       }
-  
+      this.elements.key.dataset.code = this.code;    
+       
       switch (this.value['en']) {
         case 'Backspace':
           this.elements.key.innerHTML = this.createIconHTML('backspace');
@@ -82,16 +74,24 @@ export class Key {
           this.elements.key.innerHTML = this.createIconHTML('keyboard_arrow_right');
           break
         default:
+          this.elements.mainValue = document.createElement('span');
           this.elements.mainValue.innerText = this.value[this.language];
-        
+          this.elements.key.append(this.elements.mainValue);
+          if (this.altValue[this.language]) {
+            this.elements.altValue = document.createElement('span');
+            this.elements.altValue.classList.add('alternative-value');
+            this.elements.altValue.innerText = this.altValue[this.language];
+            this.elements.key.append(this.elements.altValue);   
+          }
       }
-  
-      this.elements.key.append(this.elements.mainValue);
-      this.elements.key.append(this.elements.altValue);    
+      
+      return this.elements.key;
     }
   
     createIconHTML(iconName) {
       return `<i class="material-icons">${iconName}</i>`;  
     }
+
+    
   }
 
