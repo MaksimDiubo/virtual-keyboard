@@ -1,5 +1,5 @@
 export class Key {
-    constructor({ value, altValue, width, newLine, code }) {
+    constructor({ value, altValue, language, width, newLine, code }) {
       this.elements = {
         key: null,
         mainValue: null,
@@ -7,7 +7,7 @@ export class Key {
       }
       this.value = value
       this.altValue = altValue
-      this.language = 'en'
+      this.language = language
       this.width = width
       this.newLine = newLine
       this.code = code
@@ -32,7 +32,8 @@ export class Key {
           this.elements.key.innerHTML = this.createIconHTML('keyboard_tab');  
           break
         case 'CapsLock':
-          this.elements.key.innerHTML = this.createIconHTML('keyboard_capslock'); 
+          this.elements.key.innerHTML = this.createIconHTML('keyboard_capslock');
+          this.elements.key.classList.add('keyboard__key--activatable');
           break
         case 'Enter':
           this.elements.key.innerHTML = this.createIconHTML('keyboard_return');
@@ -75,23 +76,40 @@ export class Key {
           break
         default:
           this.elements.mainValue = document.createElement('span');
-          this.elements.mainValue.innerText = this.value[this.language];
+          this.elements.altValue = document.createElement('span');
+          this.elements.altValue.classList.add('alternative-value');
+          this.elements.mainValue.innerText = this.value[this.language];          
+          this.elements.altValue.innerText = this.altValue[this.language];
           this.elements.key.append(this.elements.mainValue);
-          if (this.altValue[this.language]) {
-            this.elements.altValue = document.createElement('span');
-            this.elements.altValue.classList.add('alternative-value');
-            this.elements.altValue.innerText = this.altValue[this.language];
-            this.elements.key.append(this.elements.altValue);   
-          }
-      }
-      
-      return this.elements.key;
+          this.elements.key.append(this.elements.altValue);   
+        }      
     }
   
     createIconHTML(iconName) {
       return `<i class="material-icons">${iconName}</i>`;  
+    }  
+    
+    changeLanguage(lang) {
+      this.language = lang;
+      if(this.elements.key.childNodes.length > 1) {        
+        this.elements.mainValue.innerText = this.value[this.language];         
+        this.elements.altValue.innerText = this.altValue[this.language];    
+      }
     }
 
-    
+    addRippleAnimation() {
+      let x = this.elements.key.clientLeft + (this.elements.key.clientWidth * 0.5);
+      let y = this.elements.key.clientTop + (this.elements.key.clientHeight * 0.5);
+
+      let ripples = document.createElement('span');
+      ripples.classList.add('ripple')
+      ripples.style.left = x + 'px';
+      ripples.style.top = y + 'px';
+      this.elements.key.append(ripples);
+
+      setTimeout(() => {
+          ripples.remove()
+      }, 500)
+    }
   }
 

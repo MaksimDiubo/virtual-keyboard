@@ -58,6 +58,7 @@ body {
   font: inherit;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  transition: all 0.3s linear;
 }
 .keyboard__key .alternative-value {
   font-size: 1.5rem;
@@ -72,6 +73,7 @@ body {
   animation: ripple 0.5s linear infinite;
 }
 .keyboard__key--pressed {
+  opacity: 1;
   background: rgba(255, 255, 255, 0.12);
 }
 .keyboard__key--wide {
@@ -104,6 +106,16 @@ body {
   100% {
     width: 800px;
     height: 800px;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+@keyframes press {
+  0% {
+    opacity: 0.5;
+    background: #ffffff;
+  }
+  100% {
     opacity: 1;
     background: rgba(255, 255, 255, 0.12);
   }
