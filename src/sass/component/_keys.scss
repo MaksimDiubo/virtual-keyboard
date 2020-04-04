@@ -25,6 +25,7 @@
     & .alternative-value {
         font-size: 1.5rem;
         opacity: 0.5;
+        order: 1;        
     }
     & .ripple {
         position: absolute; 
@@ -32,11 +33,11 @@
         transform: translate(-50%, -50%);
         pointer-events: none;
         border-radius: 50%;
-        animation: ripple 0.5s linear infinite;
+        animation: ripple 0.7s linear infinite;
     }
     &--pressed {        
-        opacity: 1;
-        background: $color-pressed;      
+        animation: press 0.2s linear;
+        animation-fill-mode: forwards;     
     }
 
     &--wide {
@@ -59,6 +60,7 @@
         }
     }
     &--active {
+        animation: press 0.2s linear;
         &::after {
             background: $color-active;
         }
@@ -89,3 +91,4 @@
         background: $color-pressed;
     }
 }
+

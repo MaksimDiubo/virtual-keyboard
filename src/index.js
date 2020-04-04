@@ -1,5 +1,5 @@
 // document.querySelector('.keyboard').addEventListener('click', function(el) {
-    
+
 //   let x = el.clientX - el.target.offsetLeft;
 //   let y = el.clientY - el.target.offsetTop;
 
@@ -14,17 +14,17 @@
 //   }, 500)
 // })
 
-import { Key } from './js/key'
+import Key from './js/key';
 
 class Keyboard {
   constructor() {
     this.elements = {
       wrapper: null,
       textarea: null,
-      keysContainer: null, 
-      info: null,     
+      keysContainer: null,
+      info: null,
     };
-  
+
     this.properties = {
       value: '',
       capsLock: false,
@@ -35,73 +35,199 @@ class Keyboard {
     };
 
     this.layout = [
-      {value: {en: '`', ru: 'ё'}, altValue: {en: '~', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'Backquote'},
-      {value: {en: '1', ru: '1'}, altValue: {en: '!', ru: '!'}, language: this.properties.language, width: '', newLine: false, code: 'Digit1'},
-      {value: {en: '2', ru: '2'}, altValue: {en: '@', ru: '"'}, language: this.properties.language, width: '', newLine: false, code: 'Digit2'},
-      {value: {en: '3', ru: '3'}, altValue: {en: '#', ru: '№'}, language: this.properties.language, width: '', newLine: false, code: 'Digit3'},
-      {value: {en: '4', ru: '4'}, altValue: {en: '$', ru: ';'}, language: this.properties.language, width: '', newLine: false, code: 'Digit4'},
-      {value: {en: '5', ru: '5'}, altValue: {en: '%', ru: '%'}, language: this.properties.language, width: '', newLine: false, code: 'Digit5'},
-      {value: {en: '6', ru: '6'}, altValue: {en: '^', ru: ':'}, language: this.properties.language, width: '', newLine: false, code: 'Digit6'},
-      {value: {en: '7', ru: '7'}, altValue: {en: '&', ru: '?'}, language: this.properties.language, width: '', newLine: false, code: 'Digit7'},
-      {value: {en: '8', ru: '8'}, altValue: {en: '*', ru: '*'}, language: this.properties.language, width: '', newLine: false, code: 'Digit8'},
-      {value: {en: '9', ru: '9'}, altValue: {en: '(', ru: '('}, language: this.properties.language, width: '', newLine: false, code: 'Digit9'},
-      {value: {en: '0', ru: '0'}, altValue: {en: ')', ru: ')'}, language: this.properties.language, width: '', newLine: false, code: 'Digit0'},
-      {value: {en: '-', ru: '-'}, altValue: {en: '_', ru: '_'}, language: this.properties.language, width: '', newLine: false, code: 'Minus'},
-      {value: {en: '=', ru: '='}, altValue: {en: '+', ru: '+'}, language: this.properties.language, width: '', newLine: false, code: 'Equal'},
-      {value: {en: 'Backspace', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: true, code: 'Backspace'},
-      {value: {en: 'Tab', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: false, code: 'Tab'},
-      {value: {en: 'q', ru: 'й'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyQ'},
-      {value: {en: 'w', ru: 'ц'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyW'},
-      {value: {en: 'e', ru: 'у'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyE'},
-      {value: {en: 'r', ru: 'к'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyR'},
-      {value: {en: 't', ru: 'к'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyT'},
-      {value: {en: 'y', ru: 'н'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyY'},
-      {value: {en: 'u', ru: 'г'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyU'},
-      {value: {en: 'i', ru: 'ш'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyI'},
-      {value: {en: 'o', ru: 'щ'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyO'},
-      {value: {en: 'p', ru: 'з'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyP'},
-      {value: {en: '[', ru: 'х'}, altValue: {en: '{', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'BracketLeft'},
-      {value: {en: ']', ru: 'ъ'}, altValue: {en: '}', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'BracketRight'},
-      {value: {en: '\\', ru: '\\'}, altValue: {en: '|', ru: '/'}, language: this.properties.language, width: '', newLine: true, code: 'Backslash'},
-      {value: {en: 'CapsLock', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: false, code: 'CapsLock'},
-      {value: {en: 'a', ru: 'ф'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyA'},
-      {value: {en: 's', ru: 'ы'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyS'},
-      {value: {en: 'd', ru: 'в'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyD'},
-      {value: {en: 'f', ru: 'а'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyF'},
-      {value: {en: 'g', ru: 'п'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyG'},
-      {value: {en: 'h', ru: 'р'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyH'},
-      {value: {en: 'j', ru: 'о'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyJ'},
-      {value: {en: 'k', ru: 'л'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyK'},
-      {value: {en: 'l', ru: 'д'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyL'},
-      {value: {en: ';', ru: 'ж'}, altValue: {en: ':', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'Semicolon'},
-      {value: {en: "'", ru: 'э'}, altValue: {en: '"', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'Quote'},
-      {value: {en: 'Enter', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: true, code: 'Enter'},
-      {value: {en: 'ShiftLeft', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: false, code: 'ShiftLeft'},
-      {value: {en: 'z', ru: 'я'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyZ'},
-      {value: {en: 'x', ru: 'ч'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyX'},
-      {value: {en: 'c', ru: 'с'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyC'},
-      {value: {en: 'v', ru: 'м'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyV'},
-      {value: {en: 'b', ru: 'и'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyB'},
-      {value: {en: 'n', ru: 'т'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyN'},
-      {value: {en: 'm', ru: 'ь'}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'KeyM'},
-      {value: {en: ',', ru: 'б'}, altValue: {en: '<', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'Comma'},
-      {value: {en: '.', ru: 'ю'}, altValue: {en: '>', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'Period'},
-      {value: {en: '/', ru: '.'}, altValue: {en: '?', ru: ','}, language: this.properties.language, width: '', newLine: false, code: 'Slash'},
-      {value: {en: 'ShiftRight', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'ShiftRight'},
-      {value: {en: 'ArrowUp', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: true, code: 'ArrowUp'},
-      {value: {en: 'ControlLeft', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: false, code: 'ControlLeft'},
-      {value: {en: 'MetaLeft', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'MetaLeft'},
-      {value: {en: 'AltLeft', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'AltLeft'},
-      {value: {en: 'Space', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'extra-wide', newLine: false, code: 'Space'},
-      {value: {en: 'AltRight', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'AltRight'},
-      {value: {en: 'ControlRight', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: 'wide', newLine: false, code: 'ControlRight'},
-      {value: {en: 'ArrowLeft', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'ArrowLeft'},
-      {value: {en: 'ArrowDown', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'ArrowDown'},
-      {value: {en: 'ArrowRight', ru: ''}, altValue: {en: '', ru: ''}, language: this.properties.language, width: '', newLine: false, code: 'ArrowRight'},
-    ]
+      {
+        value: { en: '`', ru: 'ё' }, altValue: { en: '~', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'Backquote',
+      },
+      {
+        value: { en: '1', ru: '1' }, altValue: { en: '!', ru: '!' }, language: this.properties.language, width: '', newLine: false, code: 'Digit1',
+      },
+      {
+        value: { en: '2', ru: '2' }, altValue: { en: '@', ru: '"' }, language: this.properties.language, width: '', newLine: false, code: 'Digit2',
+      },
+      {
+        value: { en: '3', ru: '3' }, altValue: { en: '#', ru: '№' }, language: this.properties.language, width: '', newLine: false, code: 'Digit3',
+      },
+      {
+        value: { en: '4', ru: '4' }, altValue: { en: '$', ru: ';' }, language: this.properties.language, width: '', newLine: false, code: 'Digit4',
+      },
+      {
+        value: { en: '5', ru: '5' }, altValue: { en: '%', ru: '%' }, language: this.properties.language, width: '', newLine: false, code: 'Digit5',
+      },
+      {
+        value: { en: '6', ru: '6' }, altValue: { en: '^', ru: ':' }, language: this.properties.language, width: '', newLine: false, code: 'Digit6',
+      },
+      {
+        value: { en: '7', ru: '7' }, altValue: { en: '&', ru: '?' }, language: this.properties.language, width: '', newLine: false, code: 'Digit7',
+      },
+      {
+        value: { en: '8', ru: '8' }, altValue: { en: '*', ru: '*' }, language: this.properties.language, width: '', newLine: false, code: 'Digit8',
+      },
+      {
+        value: { en: '9', ru: '9' }, altValue: { en: '(', ru: '(' }, language: this.properties.language, width: '', newLine: false, code: 'Digit9',
+      },
+      {
+        value: { en: '0', ru: '0' }, altValue: { en: ')', ru: ')' }, language: this.properties.language, width: '', newLine: false, code: 'Digit0',
+      },
+      {
+        value: { en: '-', ru: '-' }, altValue: { en: '_', ru: '_' }, language: this.properties.language, width: '', newLine: false, code: 'Minus',
+      },
+      {
+        value: { en: '=', ru: '=' }, altValue: { en: '+', ru: '+' }, language: this.properties.language, width: '', newLine: false, code: 'Equal',
+      },
+      {
+        value: { en: 'Backspace', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: true, code: 'Backspace',
+      },
+      {
+        value: { en: 'Tab', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'Tab',
+      },
+      {
+        value: { en: 'q', ru: 'й' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyQ',
+      },
+      {
+        value: { en: 'w', ru: 'ц' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyW',
+      },
+      {
+        value: { en: 'e', ru: 'у' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyE',
+      },
+      {
+        value: { en: 'r', ru: 'к' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyR',
+      },
+      {
+        value: { en: 't', ru: 'к' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyT',
+      },
+      {
+        value: { en: 'y', ru: 'н' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyY',
+      },
+      {
+        value: { en: 'u', ru: 'г' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyU',
+      },
+      {
+        value: { en: 'i', ru: 'ш' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyI',
+      },
+      {
+        value: { en: 'o', ru: 'щ' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyO',
+      },
+      {
+        value: { en: 'p', ru: 'з' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyP',
+      },
+      {
+        value: { en: '[', ru: 'х' }, altValue: { en: '{', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'BracketLeft',
+      },
+      {
+        value: { en: ']', ru: 'ъ' }, altValue: { en: '}', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'BracketRight',
+      },
+      {
+        value: { en: '\\', ru: '\\' }, altValue: { en: '|', ru: '/' }, language: this.properties.language, width: '', newLine: true, code: 'Backslash',
+      },
+      {
+        value: { en: 'CapsLock', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'CapsLock',
+      },
+      {
+        value: { en: 'a', ru: 'ф' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyA',
+      },
+      {
+        value: { en: 's', ru: 'ы' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyS',
+      },
+      {
+        value: { en: 'd', ru: 'в' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyD',
+      },
+      {
+        value: { en: 'f', ru: 'а' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyF',
+      },
+      {
+        value: { en: 'g', ru: 'п' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyG',
+      },
+      {
+        value: { en: 'h', ru: 'р' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyH',
+      },
+      {
+        value: { en: 'j', ru: 'о' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyJ',
+      },
+      {
+        value: { en: 'k', ru: 'л' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyK',
+      },
+      {
+        value: { en: 'l', ru: 'д' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyL',
+      },
+      {
+        value: { en: ';', ru: 'ж' }, altValue: { en: ':', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'Semicolon',
+      },
+      {
+        value: { en: "'", ru: 'э' }, altValue: { en: '"', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'Quote',
+      },
+      {
+        value: { en: 'Enter', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: true, code: 'Enter',
+      },
+      {
+        value: { en: 'ShiftLeft', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'ShiftLeft',
+      },
+      {
+        value: { en: 'z', ru: 'я' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyZ',
+      },
+      {
+        value: { en: 'x', ru: 'ч' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyX',
+      },
+      {
+        value: { en: 'c', ru: 'с' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyC',
+      },
+      {
+        value: { en: 'v', ru: 'м' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyV',
+      },
+      {
+        value: { en: 'b', ru: 'и' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyB',
+      },
+      {
+        value: { en: 'n', ru: 'т' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyN',
+      },
+      {
+        value: { en: 'm', ru: 'ь' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'KeyM',
+      },
+      {
+        value: { en: ',', ru: 'б' }, altValue: { en: '<', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'Comma',
+      },
+      {
+        value: { en: '.', ru: 'ю' }, altValue: { en: '>', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'Period',
+      },
+      {
+        value: { en: '/', ru: '.' }, altValue: { en: '?', ru: ',' }, language: this.properties.language, width: '', newLine: false, code: 'Slash',
+      },
+      {
+        value: { en: 'ShiftRight', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'ShiftRight',
+      },
+      {
+        value: { en: 'ArrowUp', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: true, code: 'ArrowUp',
+      },
+      {
+        value: { en: 'ControlLeft', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'ControlLeft',
+      },
+      {
+        value: { en: 'MetaLeft', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'MetaLeft',
+      },
+      {
+        value: { en: 'AltLeft', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'AltLeft',
+      },
+      {
+        value: { en: 'Space', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'extra-wide', newLine: false, code: 'Space',
+      },
+      {
+        value: { en: 'AltRight', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'AltRight',
+      },
+      {
+        value: { en: 'ControlRight', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'ControlRight',
+      },
+      {
+        value: { en: 'ArrowLeft', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'ArrowLeft',
+      },
+      {
+        value: { en: 'ArrowDown', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'ArrowDown',
+      },
+      {
+        value: { en: 'ArrowRight', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'ArrowRight',
+      },
+    ];
 
     this.keys = [];
-    }
+  }
 
   init() {
     // create main elements
@@ -114,145 +240,183 @@ class Keyboard {
     // Setup maim elements
     this.elements.wrapper.classList.add('wrapper');
     this.elements.textarea.classList.add('textarea');
-    this.elements.textarea.focus();
     this.elements.keysContainer.classList.add('keyboard');
-    this.elements.info.innerHTML = 'Press the <b>Alt + Shift</b> to change the language'    
-    this.elements.keysContainer.append(this.createElement())
+    this.elements.info.innerHTML = 'Press the <b>Shift + Alt</b> to change the language<br>Designed for MS Windows';
+    this.elements.keysContainer.append(this.createElement());
 
     this.elements.keys = this.elements.keysContainer.querySelectorAll('.keyboard__key');
 
 
     // add to DOM
-    
+
     this.elements.wrapper.append(this.elements.info);
     this.elements.wrapper.append(this.elements.textarea);
     this.elements.wrapper.append(this.elements.keysContainer);
-    document.body.append(this.elements.wrapper);    
+    document.body.append(this.elements.wrapper);
   }
 
   createElement() {
-    const fragment = document.createDocumentFragment();  
-    // Create keys    
-    this.layout.forEach(el => {
-      let key = new Key(el);
+    const fragment = document.createDocumentFragment();
+    // Create keys
+    this.layout.forEach((el) => {
+      const key = new Key(el);
       this.keys.push(key);
-      key.generateKey();      
+      key.generateKey();
       this.addKeysEventsHandlers(key);
       fragment.append(key.elements.key);
       if (key.newLine) {
-        fragment.append(document.createElement('br'))
+        fragment.append(document.createElement('br'));
       }
-    })
-     return fragment;    
+    });
+    return fragment;
   }
-  
-  addKeysEventsHandlers(button) {    
-    switch(button.value['en']) {
+
+  addKeysEventsHandlers(button) {
+    switch (button.value.en) {
       case 'Backspace':
-        button.elements.key.addEventListener('click', () => {
-          button.addRippleAnimation();
-          this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          this.properties.value = this.properties.value.slice(0, -1);
           this.printText();
-        })          
-        break
+        });
+        break;
       case 'Tab':
-        break
+        break;
       case 'CapsLock':
-        break
-      case 'Enter':
         button.elements.key.addEventListener('click', () => {
-          button.addRippleAnimation();
+          this.properties.capsLock = !this.properties.capsLock;
+          button.elements.key.classList.toggle('keyboard__key--active');
+          this.keys.forEach((key) => {
+            key.changeCase(this.properties.capsLock);
+          });
+        });
+        break;
+      case 'Enter':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
           this.properties.value += '\n';
           this.printText();
-        })
-        break
+        });
+        break;
       case 'ShiftLeft':
         button.elements.key.addEventListener('click', () => {
-          if(!this.properties.shift) {
-            button.elements.key.classList.add('keyboard__key--pressed');          
-            this.properties.shift = !this.properties.shift; 
+          this.properties.capsLock = !this.properties.capsLock;
+          this.keys.forEach((key) => {
+            key.changeCase(this.properties.capsLock);
+            key.changeValue();
+          });
+
+          if (!this.properties.shift) {
+            button.elements.key.classList.add('keyboard__key--pressed');
+            this.properties.shift = !this.properties.shift;
             this.changeLanguage();
             if (this.properties.alt) {
-              this.properties.shift = !this.properties.shift; 
+              this.properties.shift = !this.properties.shift;
               this.properties.alt = !this.properties.alt;
-              
-              this.keys.forEach(key => {
-                key.elements.key.classList.remove('keyboard__key--pressed');                
-              })  
+
+              this.keys.forEach((key) => {
+                key.elements.key.classList.remove('keyboard__key--pressed');
+              });
             }
           } else {
             this.properties.shift = !this.properties.shift;
             button.elements.key.classList.remove('keyboard__key--pressed');
           }
         });
-        break
+        break;
       case 'ShiftRight':
-        break 
+        button.elements.key.addEventListener('click', () => {
+          this.properties.capsLock = !this.properties.capsLock;
+          this.keys.forEach((key) => {
+            key.changeCase(this.properties.capsLock);
+            key.changeValue();
+          });
+
+          if (!this.properties.shift) {
+            button.elements.key.classList.add('keyboard__key--pressed');
+            this.properties.shift = !this.properties.shift;
+            this.changeLanguage();
+            if (this.properties.alt) {
+              this.properties.shift = !this.properties.shift;
+              this.properties.alt = !this.properties.alt;
+
+              this.keys.forEach((key) => {
+                key.elements.key.classList.remove('keyboard__key--pressed');
+              });
+            }
+          } else {
+            this.properties.shift = !this.properties.shift;
+            button.elements.key.classList.remove('keyboard__key--pressed');
+          }
+        });
+        break;
       case 'ArrowUp':
-        break
+        break;
       case 'ControlLeft':
-        break
+        break;
       case 'MetaLeft':
-        break
+        break;
       case 'AltLeft':
-        button.elements.key.addEventListener('click', () => {  
+        button.elements.key.addEventListener('click', () => {
           if (!this.properties.alt) {
             button.elements.key.classList.add('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;  
+            this.properties.alt = !this.properties.alt;
             this.changeLanguage();
             if (this.properties.shift) {
               this.properties.alt = !this.properties.alt;
               this.properties.shift = !this.properties.shift;
-              this.keys.forEach(key => {
+              this.keys.forEach((key) => {
                 key.elements.key.classList.remove('keyboard__key--pressed');
-              }) 
+              });
             }
           } else {
             button.elements.key.classList.remove('keyboard__key--pressed');
             this.properties.alt = !this.properties.alt;
-          }         
-
+          }
         });
-        break
+        break;
       case 'Space':
-        button.elements.key.addEventListener('click', () => {
-          button.addRippleAnimation();
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
           this.properties.value += ' ';
           this.printText();
-        })
-        break
+        });
+        break;
       case 'AltRight':
-        button.elements.key.addEventListener('click', () => {  
+        button.elements.key.addEventListener('click', () => {
           if (!this.properties.alt) {
             button.elements.key.classList.add('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;  
+            this.properties.alt = !this.properties.alt;
             this.changeLanguage();
             if (this.properties.shift) {
               this.properties.alt = !this.properties.alt;
               this.properties.shift = !this.properties.shift;
-              this.keys.forEach(key => {
+              this.keys.forEach((key) => {
                 key.elements.key.classList.remove('keyboard__key--pressed');
-              }) 
+              });
             }
           } else {
             button.elements.key.classList.remove('keyboard__key--pressed');
             this.properties.alt = !this.properties.alt;
-          }         
-
+          }
         });
-        break
+        break;
       case 'ControlRight':
-        break
+        break;
       case 'ArrowLeft':
-        break
+        break;
       case 'ArrowDown':
-        break
+        break;
       case 'ArrowRight':
-        break
+        break;
       default:
-        button.elements.key.addEventListener('click', () => {
-          button.addRippleAnimation();
-          this.properties.value += button.elements.mainValue.textContent;
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          if (this.properties.shift && button.elements.altValue.textContent) {
+            this.properties.value += button.elements.altValue.textContent;
+          } else {
+            this.properties.value += button.elements.mainValue.textContent;
+          }
           this.printText();
         });
     }
@@ -262,38 +426,34 @@ class Keyboard {
     this.elements.textarea.value = this.properties.value;
   }
 
-  addDocumentKeyboardEventHandler() {        
+  addDocumentKeyboardEventHandler() {
     document.addEventListener('keydown', (e) => {
       this.elements.textarea.focus();
-
-      this.keys.forEach(key => {
-        if (e.code === key.code) {  
-          key.addRippleAnimation();
+      e.preventDefault();
+      this.keys.forEach((key) => {
+        if (e.code === key.code) {
+          const mouseEvent = new MouseEvent('click');
+          key.elements.key.dispatchEvent(mouseEvent);
+          key.addRippleAnimationForKeyboardEvent();
         }
-      })
-    })
+      });
+    });
   }
 
   changeLanguage() {
     if (this.properties.shift && this.properties.alt) {
       this.properties.language = this.properties.language === 'en' ? 'ru' : 'en';
-      localStorage.setItem('lang', this.properties.language);    
-      this.keys.forEach(key => {
+      localStorage.setItem('lang', this.properties.language);
+      this.keys.forEach((key) => {
         key.changeLanguage(this.properties.language);
-      })
-    } 
+      });
+    }
   }
-
-
-  
-
 }
 
 window.onload = () => {
   const keyboard = new Keyboard();
   keyboard.init();
   keyboard.elements.textarea.focus();
-  keyboard.addDocumentKeyboardEventHandler(); 
-  
-}
-
+  keyboard.addDocumentKeyboardEventHandler();
+};
