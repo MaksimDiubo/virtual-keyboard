@@ -117,7 +117,10 @@ class Keyboard {
         value: { en: ']', ru: 'ъ' }, altValue: { en: '}', ru: '' }, language: this.properties.language, width: '', newLine: false, code: 'BracketRight',
       },
       {
-        value: { en: '\\', ru: '\\' }, altValue: { en: '|', ru: '/' }, language: this.properties.language, width: '', newLine: true, code: 'Backslash',
+        value: { en: '\\', ru: '\\' }, altValue: { en: '|', ru: '/' }, language: this.properties.language, width: '', newLine: false, code: 'Backslash',
+      },
+      {
+        value: { en: 'Delete', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: '', newLine: true, code: 'Delete',
       },
       {
         value: { en: 'CapsLock', ru: '' }, altValue: { en: '', ru: '' }, language: this.properties.language, width: 'wide', newLine: false, code: 'CapsLock',
@@ -240,8 +243,9 @@ class Keyboard {
     // Setup maim elements
     this.elements.wrapper.classList.add('wrapper');
     this.elements.textarea.classList.add('textarea');
+    this.elements.textarea.setAttribute('cols', '70');
     this.elements.keysContainer.classList.add('keyboard');
-    this.elements.info.innerHTML = 'Press the <b>Shift + Alt</b> to change the language<br>Designed for MS Windows';
+    this.elements.info.innerHTML = 'Press <b>Shift + Alt</b> to change the language<br>Designed for MS Windows';
     this.elements.keysContainer.append(this.createElement());
 
     this.elements.keys = this.elements.keysContainer.querySelectorAll('.keyboard__key');
@@ -276,11 +280,42 @@ class Keyboard {
       case 'Backspace':
         button.elements.key.addEventListener('click', (e) => {
           button.addRippleAnimation(e);
-          this.properties.value = this.properties.value.slice(0, -1);
+          const val = this.properties.value;
+          const start = this.elements.textarea.selectionStart;
+          const end = this.elements.textarea.selectionEnd;
+          if (start !== end) {
+            this.properties.value = `${val.slice(0, start)}${val.slice(end)}`;
+          } else {
+            this.properties.value = `${val.slice(0, start - 1)}${val.slice(end)}`;
+          }
           this.printText();
+          this.setCaretPosition(start - 1);
         });
         break;
       case 'Tab':
+        button.elements.key.addEventListener('click', () => {
+          const val = this.properties.value;
+          const start = this.elements.textarea.selectionStart;
+          const end = this.elements.textarea.selectionEnd;
+          this.properties.value = `${val.slice(0, start)}\t${val.slice(end)}`;
+          this.printText();
+          this.setCaretPosition(start + 1);
+        });
+        break;
+      case 'Delete':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          const val = this.properties.value;
+          const start = this.elements.textarea.selectionStart;
+          const end = this.elements.textarea.selectionEnd;
+          if (start !== end) {
+            this.properties.value = `${val.slice(0, start)}${val.slice(end)}`;
+          } else {
+            this.properties.value = `${val.slice(0, start)}${val.slice(end + 1)}`;
+          }
+          this.printText();
+          this.setCaretPosition(start);
+        });
         break;
       case 'CapsLock':
         button.elements.key.addEventListener('click', () => {
@@ -351,10 +386,18 @@ class Keyboard {
         });
         break;
       case 'ArrowUp':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          const position = this.elements.textarea.selectionStart;
+          this.setCaretPosition(position - 71);
+        });
         break;
       case 'ControlLeft':
         break;
       case 'MetaLeft':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+        });
         break;
       case 'AltLeft':
         button.elements.key.addEventListener('click', () => {
@@ -404,10 +447,25 @@ class Keyboard {
       case 'ControlRight':
         break;
       case 'ArrowLeft':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          const position = this.elements.textarea.selectionStart;
+          this.setCaretPosition(position - 1);
+        });
         break;
       case 'ArrowDown':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          const position = this.elements.textarea.selectionStart;
+          this.setCaretPosition(position + 71);
+        });
         break;
       case 'ArrowRight':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+          const position = this.elements.textarea.selectionStart;
+          this.setCaretPosition(position + 1);
+        });
         break;
       default:
         button.elements.key.addEventListener('click', (e) => {
@@ -424,6 +482,7 @@ class Keyboard {
 
   printText() {
     this.elements.textarea.value = this.properties.value;
+    this.elements.textarea.focus();
   }
 
   addDocumentKeyboardEventHandler() {
@@ -449,11 +508,16 @@ class Keyboard {
       });
     }
   }
+
+  setCaretPosition(curetPosition) {
+    this.elements.textarea.focus();
+    this.elements.textarea.selectionStart = curetPosition;
+    this.elements.textarea.selectionEnd = curetPosition;
+  }
 }
 
 window.onload = () => {
   const keyboard = new Keyboard();
   keyboard.init();
-  keyboard.elements.textarea.focus();
   keyboard.addDocumentKeyboardEventHandler();
 };

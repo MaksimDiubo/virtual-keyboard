@@ -35,6 +35,9 @@ export default class Key {
       case 'Tab':
         this.elements.key.innerHTML = createIconHTML('keyboard_tab');
         break;
+      case 'Delete':
+        this.elements.key.innerText = 'Del';
+        break;
       case 'CapsLock':
         this.elements.key.innerHTML = createIconHTML('keyboard_capslock');
         this.elements.key.classList.add('keyboard__key--activatable');

@@ -1,9 +1,12 @@
 .wrapper {
     width: $content-width;
-    height: 100vh;
     margin: auto;
     padding: 100px 0;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     flex-direction: column;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
 }
