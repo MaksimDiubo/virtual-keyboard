@@ -1,19 +1,3 @@
-// document.querySelector('.keyboard').addEventListener('click', function(el) {
-
-//   let x = el.clientX - el.target.offsetLeft;
-//   let y = el.clientY - el.target.offsetTop;
-
-//   let ripples = document.createElement('span');
-//   ripples.classList.add('ripple')
-//   ripples.style.left = x + 'px';
-//   ripples.style.top = y + 'px';
-//   el.target.append(ripples);
-
-//   setTimeout(() => {
-//       ripples.remove()
-//   }, 500)
-// })
-
 import Key from './js/key';
 
 class Keyboard {
@@ -29,7 +13,6 @@ class Keyboard {
       value: '',
       capsLock: false,
       shift: false,
-      alt: false,
       ctrl: false,
       language: localStorage.getItem('lang') || 'en',
     };
@@ -245,7 +228,7 @@ class Keyboard {
     this.elements.textarea.classList.add('textarea');
     this.elements.textarea.setAttribute('cols', '70');
     this.elements.keysContainer.classList.add('keyboard');
-    this.elements.info.innerHTML = 'Press <b>Shift + Alt</b> to change the language<br>Designed for MS Windows';
+    this.elements.info.innerHTML = 'Press <b>Shift + Ctrl</b> to change the language<br>Designed for MS Windows';
     this.elements.keysContainer.append(this.createElement());
 
     this.elements.keys = this.elements.keysContainer.querySelectorAll('.keyboard__key');
@@ -345,12 +328,13 @@ class Keyboard {
             button.elements.key.classList.add('keyboard__key--pressed');
             this.properties.shift = !this.properties.shift;
             this.changeLanguage();
-            if (this.properties.alt) {
+            if (this.properties.ctrl) {
               this.properties.shift = !this.properties.shift;
-              this.properties.alt = !this.properties.alt;
-
+              this.properties.ctrl = !this.properties.ctrl;
+              this.properties.capsLock = !this.properties.capsLock;
               this.keys.forEach((key) => {
                 key.elements.key.classList.remove('keyboard__key--pressed');
+                key.changeCase(this.properties.capsLock);
               });
             }
           } else {
@@ -371,12 +355,13 @@ class Keyboard {
             button.elements.key.classList.add('keyboard__key--pressed');
             this.properties.shift = !this.properties.shift;
             this.changeLanguage();
-            if (this.properties.alt) {
+            if (this.properties.ctrl) {
               this.properties.shift = !this.properties.shift;
-              this.properties.alt = !this.properties.alt;
-
+              this.properties.ctrl = !this.properties.ctrl;
+              this.properties.capsLock = !this.properties.capsLock;
               this.keys.forEach((key) => {
                 key.elements.key.classList.remove('keyboard__key--pressed');
+                key.changeCase(this.properties.capsLock);
               });
             }
           } else {
@@ -393,6 +378,25 @@ class Keyboard {
         });
         break;
       case 'ControlLeft':
+        button.elements.key.addEventListener('click', () => {
+          if (!this.properties.ctrl) {
+            button.elements.key.classList.add('keyboard__key--pressed');
+            this.properties.ctrl = !this.properties.ctrl;
+            this.changeLanguage();
+            if (this.properties.shift) {
+              this.properties.ctrl = !this.properties.ctrl;
+              this.properties.shift = !this.properties.shift;
+              this.properties.capsLock = !this.properties.capsLock;
+              this.keys.forEach((key) => {
+                key.elements.key.classList.remove('keyboard__key--pressed');
+                key.changeCase(this.properties.capsLock);
+              });
+            }
+          } else {
+            button.elements.key.classList.remove('keyboard__key--pressed');
+            this.properties.ctrl = !this.properties.ctrl;
+          }
+        });
         break;
       case 'MetaLeft':
         button.elements.key.addEventListener('click', (e) => {
@@ -400,22 +404,8 @@ class Keyboard {
         });
         break;
       case 'AltLeft':
-        button.elements.key.addEventListener('click', () => {
-          if (!this.properties.alt) {
-            button.elements.key.classList.add('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;
-            this.changeLanguage();
-            if (this.properties.shift) {
-              this.properties.alt = !this.properties.alt;
-              this.properties.shift = !this.properties.shift;
-              this.keys.forEach((key) => {
-                key.elements.key.classList.remove('keyboard__key--pressed');
-              });
-            }
-          } else {
-            button.elements.key.classList.remove('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;
-          }
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
         });
         break;
       case 'Space':
@@ -426,25 +416,30 @@ class Keyboard {
         });
         break;
       case 'AltRight':
+        button.elements.key.addEventListener('click', (e) => {
+          button.addRippleAnimation(e);
+        });
+        break;
+      case 'ControlRight':
         button.elements.key.addEventListener('click', () => {
-          if (!this.properties.alt) {
+          if (!this.properties.ctrl) {
             button.elements.key.classList.add('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;
+            this.properties.ctrl = !this.properties.ctrl;
             this.changeLanguage();
             if (this.properties.shift) {
-              this.properties.alt = !this.properties.alt;
+              this.properties.ctrl = !this.properties.ctrl;
               this.properties.shift = !this.properties.shift;
+              this.properties.capsLock = !this.properties.capsLock;
               this.keys.forEach((key) => {
                 key.elements.key.classList.remove('keyboard__key--pressed');
+                key.changeCase(this.properties.capsLock);
               });
             }
           } else {
             button.elements.key.classList.remove('keyboard__key--pressed');
-            this.properties.alt = !this.properties.alt;
+            this.properties.ctrl = !this.properties.ctrl;
           }
         });
-        break;
-      case 'ControlRight':
         break;
       case 'ArrowLeft':
         button.elements.key.addEventListener('click', (e) => {
@@ -487,8 +482,11 @@ class Keyboard {
 
   addDocumentKeyboardEventHandler() {
     document.addEventListener('keydown', (e) => {
-      this.elements.textarea.focus();
       e.preventDefault();
+      if (e.repeat) {
+        return;
+      }
+      this.elements.textarea.focus();
       this.keys.forEach((key) => {
         if (e.code === key.code) {
           const mouseEvent = new MouseEvent('click');
@@ -496,11 +494,11 @@ class Keyboard {
           key.addRippleAnimationForKeyboardEvent();
         }
       });
-    });
+    }, false);
   }
 
   changeLanguage() {
-    if (this.properties.shift && this.properties.alt) {
+    if (this.properties.shift && this.properties.ctrl) {
       this.properties.language = this.properties.language === 'en' ? 'ru' : 'en';
       localStorage.setItem('lang', this.properties.language);
       this.keys.forEach((key) => {
